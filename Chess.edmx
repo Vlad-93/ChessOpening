@@ -1,0 +1,755 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище ChessModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Debuts">
+          <Key>
+            <PropertyRef Name="DebutID" />
+          </Key>
+          <Property Name="DebutID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TitleDebut" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="NumberMoves" Type="tinyint" Nullable="false" />
+          <Property Name="ListMoves" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="NumberGames" Type="int" Nullable="false" />
+          <Property Name="NumberWinsWhite" Type="int" Nullable="false" />
+          <Property Name="NumberWinsBlack" Type="int" Nullable="false" />
+          <Property Name="NumberDraw" Type="int" Nullable="false" />
+          <Property Name="PercentWinsWhite" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="PercentWinsBlack" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="PercentDraw" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="GameId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerWhite" Type="bigint" Nullable="false" />
+          <Property Name="PlayerBlack" Type="bigint" Nullable="false" />
+          <Property Name="Result" Type="tinyint" Nullable="false" />
+          <Property Name="Debut" Type="int" />
+          <Property Name="GameType" Type="tinyint" Nullable="false" />
+          <Property Name="TimeToPlay" Type="smalldatetime" />
+          <Property Name="AddTimeToMove" Type="smalldatetime" />
+          <Property Name="NumberMoves" Type="smallint" />
+          <Property Name="DateGame" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="GameType">
+          <Key>
+            <PropertyRef Name="GameTypeId" />
+          </Key>
+          <Property Name="GameTypeId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TitleGameType" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="RankPlayer">
+          <Key>
+            <PropertyRef Name="RankId" />
+          </Key>
+          <Property Name="RankId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TitleRank" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="ResultGame">
+          <Key>
+            <PropertyRef Name="ResultId" />
+          </Key>
+          <Property Name="ResultId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TitleResult" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="ConditionGameFinish" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="GenderId" />
+          </Key>
+          <Property Name="GenderId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TitleGender" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="30" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Gender" Type="tinyint" Nullable="false" />
+          <Property Name="DateBirthday" Type="smalldatetime" />
+          <Property Name="RankPlayer" Type="tinyint" Nullable="false" />
+          <Property Name="Rating" Type="smallint" Nullable="false" />
+          <Property Name="NumberGames" Type="int" />
+          <Property Name="NumberWins" Type="int" />
+          <Property Name="NumberDraw" Type="int" />
+          <Property Name="NumberDefeat" Type="int" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "ChessOpening.ChessDetails.v_DebutStatistic" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="v_DebutStatistic">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="TitleDebut" />
+            <PropertyRef Name="TitleResult" />
+            <PropertyRef Name="ConditionGameFinish" />
+          </Key>
+          <Property Name="GameId" Type="bigint" Nullable="false" />
+          <Property Name="TitleDebut" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TitleResult" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="ConditionGameFinish" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DateGame" Type="smalldatetime" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "ChessOpening.PlayerDetails.v_GrandMasters" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="v_GrandMasters">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="Country" />
+            <PropertyRef Name="Gender" />
+            <PropertyRef Name="RankPlayer" />
+            <PropertyRef Name="Rating" />
+          </Key>
+          <Property Name="PlayerId" Type="bigint" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="30" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Gender" Type="tinyint" Nullable="false" />
+          <Property Name="DateBirthday" Type="smalldatetime" />
+          <Property Name="RankPlayer" Type="tinyint" Nullable="false" />
+          <Property Name="Rating" Type="smallint" Nullable="false" />
+          <Property Name="NumberGames" Type="int" />
+          <Property Name="NumberWins" Type="int" />
+          <Property Name="NumberDraw" Type="int" />
+          <Property Name="NumberDefeat" Type="int" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "ChessOpening.PlayerDetails.v_PlayerInfo" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="v_PlayerInfo">
+          <Key>
+            <PropertyRef Name="Фамилия" />
+            <PropertyRef Name="Имя" />
+            <PropertyRef Name="Пол" />
+            <PropertyRef Name="Страна" />
+            <PropertyRef Name="Разряд" />
+            <PropertyRef Name="Рейтинг" />
+          </Key>
+          <Property Name="Фамилия" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Имя" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Пол" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Страна" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Дата рождения" Type="smalldatetime" />
+          <Property Name="Разряд" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Полное название разряда" Type="nvarchar" MaxLength="200" />
+          <Property Name="Рейтинг" Type="smallint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Games_Debuts">
+          <End Role="Debuts" Type="Self.Debuts" Multiplicity="0..1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Debuts">
+              <PropertyRef Name="DebutID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Debut" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_GameType">
+          <End Role="GameType" Type="Self.GameType" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameType">
+              <PropertyRef Name="GameTypeId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="GameType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_Black">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="PlayerBlack" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_White">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="PlayerWhite" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_ResultGame">
+          <End Role="ResultGame" Type="Self.ResultGame" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResultGame">
+              <PropertyRef Name="ResultId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Result" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Players_Gender">
+          <End Role="Gender" Type="Self.Gender" Multiplicity="1" />
+          <End Role="Players" Type="Self.Players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="GenderId" />
+            </Principal>
+            <Dependent Role="Players">
+              <PropertyRef Name="Gender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Players_RankPlayer">
+          <End Role="RankPlayer" Type="Self.RankPlayer" Multiplicity="1" />
+          <End Role="Players" Type="Self.Players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RankPlayer">
+              <PropertyRef Name="RankId" />
+            </Principal>
+            <Dependent Role="Players">
+              <PropertyRef Name="RankPlayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ChessModelContainer">
+          <EntitySet Name="Debuts" EntityType="Self.Debuts" Schema="ChessDetails" store:Type="Tables" />
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="ChessDetails" store:Type="Tables" />
+          <EntitySet Name="GameType" EntityType="Self.GameType" Schema="ChessDetails" store:Type="Tables" />
+          <EntitySet Name="RankPlayer" EntityType="Self.RankPlayer" Schema="ChessDetails" store:Type="Tables" />
+          <EntitySet Name="ResultGame" EntityType="Self.ResultGame" Schema="ChessDetails" store:Type="Tables" />
+          <EntitySet Name="Gender" EntityType="Self.Gender" Schema="PlayerDetails" store:Type="Tables" />
+          <EntitySet Name="Players" EntityType="Self.Players" Schema="PlayerDetails" store:Type="Tables" />
+          <EntitySet Name="v_DebutStatistic" EntityType="Self.v_DebutStatistic" store:Type="Views" store:Schema="ChessDetails">
+            <DefiningQuery>SELECT 
+    [v_DebutStatistic].[GameId] AS [GameId], 
+    [v_DebutStatistic].[TitleDebut] AS [TitleDebut], 
+    [v_DebutStatistic].[TitleResult] AS [TitleResult], 
+    [v_DebutStatistic].[ConditionGameFinish] AS [ConditionGameFinish], 
+    [v_DebutStatistic].[DateGame] AS [DateGame]
+    FROM [ChessDetails].[v_DebutStatistic] AS [v_DebutStatistic]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_GrandMasters" EntityType="Self.v_GrandMasters" store:Type="Views" store:Schema="PlayerDetails">
+            <DefiningQuery>SELECT 
+    [v_GrandMasters].[PlayerId] AS [PlayerId], 
+    [v_GrandMasters].[LastName] AS [LastName], 
+    [v_GrandMasters].[FirstName] AS [FirstName], 
+    [v_GrandMasters].[MiddleName] AS [MiddleName], 
+    [v_GrandMasters].[Country] AS [Country], 
+    [v_GrandMasters].[Gender] AS [Gender], 
+    [v_GrandMasters].[DateBirthday] AS [DateBirthday], 
+    [v_GrandMasters].[RankPlayer] AS [RankPlayer], 
+    [v_GrandMasters].[Rating] AS [Rating], 
+    [v_GrandMasters].[NumberGames] AS [NumberGames], 
+    [v_GrandMasters].[NumberWins] AS [NumberWins], 
+    [v_GrandMasters].[NumberDraw] AS [NumberDraw], 
+    [v_GrandMasters].[NumberDefeat] AS [NumberDefeat]
+    FROM [PlayerDetails].[v_GrandMasters] AS [v_GrandMasters]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_PlayerInfo" EntityType="Self.v_PlayerInfo" store:Type="Views" store:Schema="PlayerDetails">
+            <DefiningQuery>SELECT 
+    [v_PlayerInfo].[Фамилия] AS [Фамилия], 
+    [v_PlayerInfo].[Имя] AS [Имя], 
+    [v_PlayerInfo].[Пол] AS [Пол], 
+    [v_PlayerInfo].[Страна] AS [Страна], 
+    [v_PlayerInfo].[Дата рождения] AS [Дата рождения], 
+    [v_PlayerInfo].[Разряд] AS [Разряд], 
+    [v_PlayerInfo].[Полное название разряда] AS [Полное название разряда], 
+    [v_PlayerInfo].[Рейтинг] AS [Рейтинг]
+    FROM [PlayerDetails].[v_PlayerInfo] AS [v_PlayerInfo]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Games_Debuts" Association="Self.FK_Games_Debuts">
+            <End Role="Debuts" EntitySet="Debuts" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_GameType" Association="Self.FK_Games_GameType">
+            <End Role="GameType" EntitySet="GameType" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_Black" Association="Self.FK_Games_Players_Black">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_White" Association="Self.FK_Games_Players_White">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_ResultGame" Association="Self.FK_Games_ResultGame">
+            <End Role="ResultGame" EntitySet="ResultGame" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Players_Gender" Association="Self.FK_Players_Gender">
+            <End Role="Gender" EntitySet="Gender" />
+            <End Role="Players" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Players_RankPlayer" Association="Self.FK_Players_RankPlayer">
+            <End Role="RankPlayer" EntitySet="RankPlayer" />
+            <End Role="Players" EntitySet="Players" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ChessModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Debut">
+          <Key>
+            <PropertyRef Name="DebutID" />
+          </Key>
+          <Property Name="DebutID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TitleDebut" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NumberMoves" Type="Byte" Nullable="false" />
+          <Property Name="ListMoves" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NumberGames" Type="Int32" Nullable="false" />
+          <Property Name="NumberWinsWhite" Type="Int32" Nullable="false" />
+          <Property Name="NumberWinsBlack" Type="Int32" Nullable="false" />
+          <Property Name="NumberDraw" Type="Int32" Nullable="false" />
+          <Property Name="PercentWinsWhite" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="PercentWinsBlack" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="PercentDraw" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_Games_Debuts" FromRole="Debuts" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="GameId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerWhite" Type="Int64" Nullable="false" />
+          <Property Name="PlayerBlack" Type="Int64" Nullable="false" />
+          <Property Name="Result" Type="Byte" Nullable="false" />
+          <Property Name="Debut" Type="Int32" />
+          <Property Name="GameType" Type="Byte" Nullable="false" />
+          <Property Name="TimeToPlay" Type="DateTime" Precision="0" />
+          <Property Name="AddTimeToMove" Type="DateTime" Precision="0" />
+          <Property Name="NumberMoves" Type="Int16" />
+          <Property Name="DateGame" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Debut1" Relationship="Self.FK_Games_Debuts" FromRole="Games" ToRole="Debuts" />
+          <NavigationProperty Name="GameType1" Relationship="Self.FK_Games_GameType" FromRole="Games" ToRole="GameType" />
+          <NavigationProperty Name="Player" Relationship="Self.FK_Games_Players_Black" FromRole="Games" ToRole="Players" />
+          <NavigationProperty Name="Player1" Relationship="Self.FK_Games_Players_White" FromRole="Games" ToRole="Players" />
+          <NavigationProperty Name="ResultGame" Relationship="Self.FK_Games_ResultGame" FromRole="Games" ToRole="ResultGame" />
+        </EntityType>
+        <EntityType Name="GameType">
+          <Key>
+            <PropertyRef Name="GameTypeId" />
+          </Key>
+          <Property Name="GameTypeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TitleGameType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_Games_GameType" FromRole="GameType" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="RankPlayer">
+          <Key>
+            <PropertyRef Name="RankId" />
+          </Key>
+          <Property Name="RankId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TitleRank" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Players" Relationship="Self.FK_Players_RankPlayer" FromRole="RankPlayer" ToRole="Players" />
+        </EntityType>
+        <EntityType Name="ResultGame">
+          <Key>
+            <PropertyRef Name="ResultId" />
+          </Key>
+          <Property Name="ResultId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TitleResult" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConditionGameFinish" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_Games_ResultGame" FromRole="ResultGame" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="GenderId" />
+          </Key>
+          <Property Name="GenderId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TitleGender" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Players" Relationship="Self.FK_Players_Gender" FromRole="Gender" ToRole="Players" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gender" Type="Byte" Nullable="false" />
+          <Property Name="DateBirthday" Type="DateTime" Precision="0" />
+          <Property Name="RankPlayer" Type="Byte" Nullable="false" />
+          <Property Name="Rating" Type="Int16" Nullable="false" />
+          <Property Name="NumberGames" Type="Int32" />
+          <Property Name="NumberWins" Type="Int32" />
+          <Property Name="NumberDraw" Type="Int32" />
+          <Property Name="NumberDefeat" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_Games_Players_Black" FromRole="Players" ToRole="Games" />
+          <NavigationProperty Name="Games1" Relationship="Self.FK_Games_Players_White" FromRole="Players" ToRole="Games" />
+          <NavigationProperty Name="RankPlayer1" Relationship="Self.FK_Players_RankPlayer" FromRole="Players" ToRole="RankPlayer" />
+          <NavigationProperty Name="Gender1" Relationship="Self.FK_Players_Gender" FromRole="Players" ToRole="Gender" />
+        </EntityType>
+        <EntityType Name="v_DebutStatistic">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="TitleDebut" />
+            <PropertyRef Name="TitleResult" />
+            <PropertyRef Name="ConditionGameFinish" />
+          </Key>
+          <Property Name="GameId" Type="Int64" Nullable="false" />
+          <Property Name="TitleDebut" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TitleResult" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConditionGameFinish" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateGame" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="v_GrandMasters">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="Country" />
+            <PropertyRef Name="Gender" />
+            <PropertyRef Name="RankPlayer" />
+            <PropertyRef Name="Rating" />
+          </Key>
+          <Property Name="PlayerId" Type="Int64" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gender" Type="Byte" Nullable="false" />
+          <Property Name="DateBirthday" Type="DateTime" Precision="0" />
+          <Property Name="RankPlayer" Type="Byte" Nullable="false" />
+          <Property Name="Rating" Type="Int16" Nullable="false" />
+          <Property Name="NumberGames" Type="Int32" />
+          <Property Name="NumberWins" Type="Int32" />
+          <Property Name="NumberDraw" Type="Int32" />
+          <Property Name="NumberDefeat" Type="Int32" />
+        </EntityType>
+        <EntityType Name="v_PlayerInfo">
+          <Key>
+            <PropertyRef Name="Фамилия" />
+            <PropertyRef Name="Имя" />
+            <PropertyRef Name="Пол" />
+            <PropertyRef Name="Страна" />
+            <PropertyRef Name="Разряд" />
+            <PropertyRef Name="Рейтинг" />
+          </Key>
+          <Property Name="Фамилия" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Имя" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Пол" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Страна" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Дата_рождения" Type="DateTime" Precision="0" />
+          <Property Name="Разряд" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Полное_название_разряда" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Рейтинг" Type="Int16" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Games_Debuts">
+          <End Role="Debuts" Type="Self.Debut" Multiplicity="0..1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Debuts">
+              <PropertyRef Name="DebutID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Debut" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_GameType">
+          <End Role="GameType" Type="Self.GameType" Multiplicity="1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameType">
+              <PropertyRef Name="GameTypeId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="GameType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_Black">
+          <End Role="Players" Type="Self.Player" Multiplicity="1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="PlayerBlack" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_White">
+          <End Role="Players" Type="Self.Player" Multiplicity="1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="PlayerWhite" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_ResultGame">
+          <End Role="ResultGame" Type="Self.ResultGame" Multiplicity="1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResultGame">
+              <PropertyRef Name="ResultId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Result" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Players_RankPlayer">
+          <End Role="RankPlayer" Type="Self.RankPlayer" Multiplicity="1" />
+          <End Role="Players" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RankPlayer">
+              <PropertyRef Name="RankId" />
+            </Principal>
+            <Dependent Role="Players">
+              <PropertyRef Name="RankPlayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Players_Gender">
+          <End Role="Gender" Type="Self.Gender" Multiplicity="1" />
+          <End Role="Players" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="GenderId" />
+            </Principal>
+            <Dependent Role="Players">
+              <PropertyRef Name="Gender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ChessEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Debuts" EntityType="Self.Debut" />
+          <EntitySet Name="Games" EntityType="Self.Game" />
+          <EntitySet Name="GameTypes" EntityType="Self.GameType" />
+          <EntitySet Name="RankPlayers" EntityType="Self.RankPlayer" />
+          <EntitySet Name="ResultGames" EntityType="Self.ResultGame" />
+          <EntitySet Name="Genders" EntityType="Self.Gender" />
+          <EntitySet Name="Players" EntityType="Self.Player" />
+          <EntitySet Name="v_DebutStatistic" EntityType="Self.v_DebutStatistic" />
+          <EntitySet Name="v_GrandMasters" EntityType="Self.v_GrandMasters" />
+          <EntitySet Name="v_PlayerInfo" EntityType="Self.v_PlayerInfo" />
+          <AssociationSet Name="FK_Games_Debuts" Association="Self.FK_Games_Debuts">
+            <End Role="Debuts" EntitySet="Debuts" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_GameType" Association="Self.FK_Games_GameType">
+            <End Role="GameType" EntitySet="GameTypes" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_Black" Association="Self.FK_Games_Players_Black">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_White" Association="Self.FK_Games_Players_White">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_ResultGame" Association="Self.FK_Games_ResultGame">
+            <End Role="ResultGame" EntitySet="ResultGames" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Players_RankPlayer" Association="Self.FK_Players_RankPlayer">
+            <End Role="RankPlayer" EntitySet="RankPlayers" />
+            <End Role="Players" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Players_Gender" Association="Self.FK_Players_Gender">
+            <End Role="Gender" EntitySet="Genders" />
+            <End Role="Players" EntitySet="Players" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ChessModelContainer" CdmEntityContainer="ChessEntities">
+          <EntitySetMapping Name="Debuts">
+            <EntityTypeMapping TypeName="ChessModel.Debut">
+              <MappingFragment StoreEntitySet="Debuts">
+                <ScalarProperty Name="DebutID" ColumnName="DebutID" />
+                <ScalarProperty Name="TitleDebut" ColumnName="TitleDebut" />
+                <ScalarProperty Name="NumberMoves" ColumnName="NumberMoves" />
+                <ScalarProperty Name="ListMoves" ColumnName="ListMoves" />
+                <ScalarProperty Name="NumberGames" ColumnName="NumberGames" />
+                <ScalarProperty Name="NumberWinsWhite" ColumnName="NumberWinsWhite" />
+                <ScalarProperty Name="NumberWinsBlack" ColumnName="NumberWinsBlack" />
+                <ScalarProperty Name="NumberDraw" ColumnName="NumberDraw" />
+                <ScalarProperty Name="PercentWinsWhite" ColumnName="PercentWinsWhite" />
+                <ScalarProperty Name="PercentWinsBlack" ColumnName="PercentWinsBlack" />
+                <ScalarProperty Name="PercentDraw" ColumnName="PercentDraw" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="ChessModel.Game">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="PlayerWhite" ColumnName="PlayerWhite" />
+                <ScalarProperty Name="PlayerBlack" ColumnName="PlayerBlack" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="Debut" ColumnName="Debut" />
+                <ScalarProperty Name="GameType" ColumnName="GameType" />
+                <ScalarProperty Name="TimeToPlay" ColumnName="TimeToPlay" />
+                <ScalarProperty Name="AddTimeToMove" ColumnName="AddTimeToMove" />
+                <ScalarProperty Name="NumberMoves" ColumnName="NumberMoves" />
+                <ScalarProperty Name="DateGame" ColumnName="DateGame" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameTypes">
+            <EntityTypeMapping TypeName="ChessModel.GameType">
+              <MappingFragment StoreEntitySet="GameType">
+                <ScalarProperty Name="GameTypeId" ColumnName="GameTypeId" />
+                <ScalarProperty Name="TitleGameType" ColumnName="TitleGameType" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RankPlayers">
+            <EntityTypeMapping TypeName="ChessModel.RankPlayer">
+              <MappingFragment StoreEntitySet="RankPlayer">
+                <ScalarProperty Name="RankId" ColumnName="RankId" />
+                <ScalarProperty Name="TitleRank" ColumnName="TitleRank" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResultGames">
+            <EntityTypeMapping TypeName="ChessModel.ResultGame">
+              <MappingFragment StoreEntitySet="ResultGame">
+                <ScalarProperty Name="ResultId" ColumnName="ResultId" />
+                <ScalarProperty Name="TitleResult" ColumnName="TitleResult" />
+                <ScalarProperty Name="ConditionGameFinish" ColumnName="ConditionGameFinish" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genders">
+            <EntityTypeMapping TypeName="ChessModel.Gender">
+              <MappingFragment StoreEntitySet="Gender">
+                <ScalarProperty Name="GenderId" ColumnName="GenderId" />
+                <ScalarProperty Name="TitleGender" ColumnName="TitleGender" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="ChessModel.Player">
+              <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DateBirthday" ColumnName="DateBirthday" />
+                <ScalarProperty Name="RankPlayer" ColumnName="RankPlayer" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="NumberGames" ColumnName="NumberGames" />
+                <ScalarProperty Name="NumberWins" ColumnName="NumberWins" />
+                <ScalarProperty Name="NumberDraw" ColumnName="NumberDraw" />
+                <ScalarProperty Name="NumberDefeat" ColumnName="NumberDefeat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="v_DebutStatistic">
+            <EntityTypeMapping TypeName="ChessModel.v_DebutStatistic">
+              <MappingFragment StoreEntitySet="v_DebutStatistic">
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="TitleDebut" ColumnName="TitleDebut" />
+                <ScalarProperty Name="TitleResult" ColumnName="TitleResult" />
+                <ScalarProperty Name="ConditionGameFinish" ColumnName="ConditionGameFinish" />
+                <ScalarProperty Name="DateGame" ColumnName="DateGame" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="v_GrandMasters">
+            <EntityTypeMapping TypeName="ChessModel.v_GrandMasters">
+              <MappingFragment StoreEntitySet="v_GrandMasters">
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DateBirthday" ColumnName="DateBirthday" />
+                <ScalarProperty Name="RankPlayer" ColumnName="RankPlayer" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="NumberGames" ColumnName="NumberGames" />
+                <ScalarProperty Name="NumberWins" ColumnName="NumberWins" />
+                <ScalarProperty Name="NumberDraw" ColumnName="NumberDraw" />
+                <ScalarProperty Name="NumberDefeat" ColumnName="NumberDefeat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="v_PlayerInfo">
+            <EntityTypeMapping TypeName="ChessModel.v_PlayerInfo">
+              <MappingFragment StoreEntitySet="v_PlayerInfo">
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Пол" ColumnName="Пол" />
+                <ScalarProperty Name="Страна" ColumnName="Страна" />
+                <ScalarProperty Name="Дата_рождения" ColumnName="Дата рождения" />
+                <ScalarProperty Name="Разряд" ColumnName="Разряд" />
+                <ScalarProperty Name="Полное_название_разряда" ColumnName="Полное название разряда" />
+                <ScalarProperty Name="Рейтинг" ColumnName="Рейтинг" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
